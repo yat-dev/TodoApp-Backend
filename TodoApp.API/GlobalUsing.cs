@@ -1,0 +1,11 @@
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using TodoApp.Application.Categories.Queries;
+global using TodoApp.Application.Common.Exceptions;
+global using TodoApp.Application.Dtos;
+global using TodoApp.Application.Todos.Commands;
+global using TodoApp.Application.Auth.Commands;
+global using Microsoft.AspNetCore.Authorization;
+global using TodoApp.Application.Todos.Queries;
+global using TodoApp.Application;
+global using TodoApp.Infrastructure;
