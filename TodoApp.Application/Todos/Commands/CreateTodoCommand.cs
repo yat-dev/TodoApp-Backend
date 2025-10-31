@@ -9,5 +9,5 @@ public class CreateTodoCommand : IRequest<int>
     public string Description { get; set; }
     public Priority Priority { get; set; }
     public DateTime? DueDate { get; set; }
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 }

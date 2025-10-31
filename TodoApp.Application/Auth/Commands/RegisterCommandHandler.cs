@@ -1,3 +1,9 @@
+using AutoMapper;
+using MediatR;
+using TodoApp.Application.Common.Interfaces;
+using TodoApp.Domain.Entities;
+using TodoApp.Domain.Repositories;
+
 namespace TodoApp.Application.Auth.Commands;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponseDto>

@@ -1,27 +1,27 @@
+using AutoMapper;
+using MediatR;
+using TodoApp.Application.Common.Interfaces;
+using TodoApp.Domain.Entities;
+using TodoApp.Domain.Repositories;
+
 namespace TodoApp.Application.Todos.Commands;
 
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IMapper _mapper;
 
-    public CreateCategoryCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+    public CreateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _currentUserService = currentUserService;
+        _mapper = mapper;
     }
     
     public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = new Category(
-            request.Name, 
-            request.Color, 
-            _currentUserService.UserId
-        );
-
-        await _unitOfWork.Categories.AddAsync(category);
+        var category = _unitOfWork.Categories.AddAsync(_mapper.Map<Category>(request));
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+        
         return category.Id;
     }
 }

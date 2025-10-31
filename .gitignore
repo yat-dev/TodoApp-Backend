@@ -23,14 +23,6 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
-bin/
-obj/
-.idea/
-*.user
-*.suo
-packages/
-.vs/
-
 # .NET Core
 project.lock.json
 project.fragment.lock.json

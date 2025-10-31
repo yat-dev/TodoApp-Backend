@@ -4,35 +4,19 @@ public class GetCompletedTodosQueryHandler : IRequestHandler<GetCompletedTodosQu
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IMapper _mapper;
 
-    public GetCompletedTodosQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+    public GetCompletedTodosQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
+        _mapper = mapper;
     }
     
     public async Task<List<TodoItemDto>> Handle(GetCompletedTodosQuery request, CancellationToken cancellationToken)
     {
-        var todos = await _unitOfWork.Todos.GetPendingByUserIdAsync(_currentUserService.UserId);
-        
-        return todos.Select(t => new TodoItemDto
-        {
-            Id = t.Id,
-            Title = t.Title,
-            Description = t.Description,
-            IsCompleted = t.IsCompleted,
-            Priority = t.Priority,
-            DueDate = t.DueDate,
-            CreatedAt = t.CreatedAt,
-            CompletedAt = t.CompletedAt,
-            CategoryId = t.CategoryId,
-            Category = new CategoryDto
-            {
-                Id = t.Category.Id,
-                Name = t.Category.Name,
-                Color = t.Category.Color,
-                TodoCount = t.Category.TodoItems?.Count ?? 0
-            }
-        }).ToList();
+        var todos = _unitOfWork.Todos.GetCompletedByUserIdAsync(_currentUserService.UserId);
+
+        return _mapper.Map<List<TodoItemDto>>(todos);
     }
 }
