@@ -13,36 +13,33 @@ public class TodosController : BaseApiController
     [HttpGet("pending")]
     public async Task<ActionResult<List<TodoItemDto>>> GetPending([FromServices] ISender mediator)
     {
-        // var result = await Mediator.Send(new GetPendingTodosQuery());
-        // return Ok(result);
-        return null!;
+        var result = await mediator.Send(new GetPendingTodosQuery());
+        return Ok(result);
     }
     
     [HttpGet("completed")]
-    public async Task<ActionResult<List<TodoItemDto>>> GetCompleted()
+    public async Task<ActionResult<List<TodoItemDto>>> GetCompleted([FromServices] ISender mediator)
     {
-        // var result = await Mediator.Send(new GetCompletedTodosQuery());
-        // return Ok(result);
-        return null!;
+        var result = await mediator.Send(new GetCompletedTodosQuery());
+        return Ok(result);
     }
     
     [HttpGet("{id}")]
-    public async Task<ActionResult<TodoItemDto>> GetById(int id)
+    public async Task<ActionResult<TodoItemDto>> GetById(int id, [FromServices] ISender mediator)
     {
-        // try
-        // {
-        //     var result = await Mediator.Send(new GetTodoByIdQuery { Id = id });
-        //     return Ok(result);
-        // }
-        // catch (NotFoundException)
-        // {
-        //     return NotFound();
-        // }
-        return null!;
+        try
+        {
+            var result = await mediator.Send(new GetTodoByIdQuery { Id = id });
+            return Ok(result);
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost]
-    public async Task<ActionResult<int>> Create([FromBody] CreateCategoryCommand command, [FromServices] ISender mediator)
+    public async Task<ActionResult<int>> Create([FromBody] CreateTodoCommand command, [FromServices] ISender mediator)
     {
         var id = await mediator.Send(command);
         return Ok(id);

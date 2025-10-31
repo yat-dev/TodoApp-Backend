@@ -1,11 +1,12 @@
 namespace TodoApp.API.Controllers;
 
+[Authorize]
 public class CategoriesController : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<List<CategoryDto>>> GetAll([FromServices] ISender mediator)
     {
-        var result = mediator.Send(new GetAllCategoriesQuery());
+        var result = await mediator.Send(new GetAllCategoriesQuery());
         return Ok(result);
     }
 

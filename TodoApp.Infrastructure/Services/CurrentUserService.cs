@@ -17,18 +17,24 @@ public class CurrentUserService : ICurrentUserService
     {
         get
         {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).ToString();
+            var claim = _httpContextAccessor.HttpContext?.User?
+                .FindFirst(ClaimTypes.NameIdentifier);
                 
-            return int.TryParse(userIdClaim, out var userId) ? userId : 0;
+            if (claim == null)
+                return 0;
+                
+            return int.TryParse(claim.Value, out var userId) ? userId : 0;
         }
     }
 
-    public string UserName
+    public string Username
     {
         get
         {
-            return _httpContextAccessor.HttpContext?.User?
-                .FindFirst(ClaimTypes.Name).ToString() ?? string.Empty;
+            var claim = _httpContextAccessor.HttpContext?.User?
+                .FindFirst(ClaimTypes.Name);
+                
+            return claim?.Value ?? string.Empty;
         }
     }
 }

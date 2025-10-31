@@ -4,13 +4,11 @@ public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoIte
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMapper _mapper;
 
-    public GetTodoByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper)
+    public GetTodoByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
         _unitOfWork = unitOfWork;
-        _currentUserService = currentUserService;   
-        _mapper = mapper;
+        _currentUserService = currentUserService;
     }
     
     public async Task<TodoItemDto> Handle(GetTodoByIdQuery request, CancellationToken cancellationToken)
@@ -19,7 +17,25 @@ public class GetTodoByIdQueryHandler : IRequestHandler<GetTodoByIdQuery, TodoIte
         
         if (todo == null || todo.UserId != _currentUserService.UserId)
             throw new NotFoundException(nameof(TodoItem), request.Id);
-        
-        return _mapper.Map<TodoItemDto>(todo);
+
+        return new TodoItemDto()
+        {
+            Id = todo.Id,
+            Title = todo.Title,
+            Description = todo.Description,
+            IsCompleted = todo.IsCompleted,
+            Priority = todo.Priority,
+            DueDate = todo.DueDate,
+            CreatedAt = todo.CreatedAt,
+            CompletedAt = todo.CompletedAt,
+            CategoryId = todo.CategoryId,
+            Category = new CategoryDto()
+            {
+                Id = todo.Category.Id,
+                Name = todo.Category.Name,
+                Color = todo.Category.Color,
+                TodoCount = todo.Category.TodoItems.Count
+            }
+        };
     }
 }
