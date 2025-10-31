@@ -16,7 +16,7 @@ public class TodoItem : BaseEntity
     public int UserId { get; private set; }
     public User User { get; private set; } = null!;
 
-    public int? CategoryId { get; private set; }
+    public int CategoryId { get; private set; }
     public Category Category { get; private set; } = null!;
 
     public TodoItem()
@@ -65,7 +65,7 @@ public class TodoItem : BaseEntity
         }
     }
     
-    public void AssignToCategory(int? categoryId)
+    public void AssignToCategory(int categoryId)
     {
         CategoryId = categoryId;
     }

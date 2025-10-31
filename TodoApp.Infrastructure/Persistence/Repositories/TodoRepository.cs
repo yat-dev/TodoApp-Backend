@@ -20,7 +20,7 @@ public class TodoRepository : ITodoRepository
                 .FirstOrDefaultAsync(t => t.Id == id))!;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetAllByUserIdAsync(int userId)
+        public async Task<List<TodoItem>> GetAllByUserIdAsync(int userId)
         {
             return await _context.TodoItems
                 .Where(t => t.UserId == userId)
@@ -29,7 +29,7 @@ public class TodoRepository : ITodoRepository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TodoItem>> GetCompletedByUserIdAsync(int userId)
+        public async Task<List<TodoItem>> GetCompletedByUserIdAsync(int userId)
         {
             return await _context.TodoItems
                 .Where(t => t.UserId == userId && t.IsCompleted)
@@ -38,7 +38,7 @@ public class TodoRepository : ITodoRepository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TodoItem>> GetPendingByUserIdAsync(int userId)
+        public async Task<List<TodoItem>> GetPendingByUserIdAsync(int userId)
         {
             return await _context.TodoItems
                 .Where(t => t.UserId == userId && !t.IsCompleted)

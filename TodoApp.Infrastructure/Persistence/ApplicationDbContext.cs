@@ -28,7 +28,7 @@ public class ApplicationDbContext : DbContext
                 
                 // Utiliser un backing field pour éviter les setters publics
                 entity.Property(e => e.CreatedAt)
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasDefaultValueSql("NOW()");
 
                 entity.HasMany(e => e.TodoItems)
                     .WithOne(t => t.User)
@@ -51,7 +51,7 @@ public class ApplicationDbContext : DbContext
                 entity.Property(e => e.Priority)
                     .HasDefaultValue(Priority.Medium)
                     .HasConversion<int>();
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("NOW()");
 
                 entity.HasOne(e => e.Category)
                     .WithMany(c => c.TodoItems)
